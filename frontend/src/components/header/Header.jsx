@@ -36,7 +36,7 @@ const Header = () => {
   console.log("isLoggedIn", isLoggedIn);
   return (
     <header>
-      <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5">
+      <nav className="bg-white border-gray-200 px-4 lg:px-6 py-6">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <Link to="/" className="flex items-center">
             <img
@@ -118,6 +118,15 @@ const Header = () => {
                   aria-current="page"
                 >
                   Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard"
+                  className="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0"
+                  aria-current="page"
+                >
+                  Dashboard
                 </Link>
               </li>
               {/* <li>

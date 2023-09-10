@@ -1,4 +1,4 @@
-const { hashText, createToken, generateAuthError, compareWithHashedText } = require("./helpers/authHelpers");
+const { hashText, createToken, generateAuthError, compareWithHashedText, verifyJWT } = require("./helpers/authHelpers");
 const userSchema = require("../models/userSchema")
 const randomstring = require("randomstring");
 const sendEmail = require('../utils/email')
@@ -65,11 +65,16 @@ const login = async (req, res) => {
 
 //verify usertoken
 const verifyUserToken = async (req, res) => {
+    console.log('herrrrrrrrr');
     const data = {
         isVerified: true
     }
     data.isVerified = await verifyJWT(req.body.cookie)
-    res.status(200).send(data)
+    if(data.isVerified){
+        res.status(200).json(data)
+    }else{
+        res.status(403).json(data)
+    }
 }
 
 //forgot password

@@ -51,13 +51,10 @@ function Signup() {
             dispatch(checkCookie(true));
             Navigate("/dashboard");
           }
-
-          console.log("1");
         } catch (err) {
           if (err.response.data.error.email) {
             errors.email = err.response.data.error.email;
           }
-          console.log('2');
           console.log(err.response.data);
         }
 

@@ -1,5 +1,6 @@
 const Bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const userSchema = require('../../models/userSchema');
 const saltRound = process.env.BCRYPT_SALT_ROUND
 // const user = require('../../models/userSchema');
 
@@ -38,8 +39,12 @@ const compareWithHashedText = async (plainText, hashedText) => {
 const verifyJWT = async (token) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
+
+        console.log(decoded);
         try {
-            const userData = await user.findOne({ _id: decoded.id })
+            const userData = await userSchema.findOne({ _id: decoded.id })
+
+            console.log(userData);
             if (userData) {
                 return true
             } else {
@@ -50,7 +55,7 @@ const verifyJWT = async (token) => {
             return false
         }
     } catch (error) {
-        console.console.log(error);
+        console.log(error);
         return false
     }
 }

@@ -146,12 +146,12 @@ function Login() {
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-start"></div>
-                  <a
-                    href="#"
+                  <Link
+                    to="/forgot-password"
                     className="text-sm font-medium text-primary-600 hover:underline "
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
                 <button
                   type="submit"

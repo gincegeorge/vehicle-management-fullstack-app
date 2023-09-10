@@ -10,7 +10,7 @@ const app = express()
 app.use(morgan('dev'))
 app.use(express.json())
 
-//cors 
+//cors  
 // app.use(cors({
 //     origin: [FRONTEND_URL],
 //     methods: ["GET", "POST"],
