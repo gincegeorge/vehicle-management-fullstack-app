@@ -11,11 +11,12 @@ app.use(morgan('dev'))
 app.use(express.json())
 
 //cors 
-app.use(cors({
-    origin: [FRONTEND_URL],
-    methods: ["GET", "POST"],
-    credentials: true
-}))
+// app.use(cors({
+//     origin: [FRONTEND_URL],
+//     methods: ["GET", "POST"],
+//     credentials: true
+// }))
+app.use(cors())
 
 //server setup
 app.listen(BACKEND_PORT, () => {

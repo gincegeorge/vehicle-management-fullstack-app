@@ -5,6 +5,7 @@ const sendEmail = require('../utils/email')
 
 //signup
 const signUp = async (req, res) => {
+
     try {
 
         let { name, email, password } = req.body
@@ -33,7 +34,11 @@ const signUp = async (req, res) => {
 const login = async (req, res) => {
     const { email, password } = req.body
 
+    console.log(email, password);
+
     const userData = await userSchema.findOne({ email: email })
+
+    console.log(userData);
 
     if (userData) {
         try {
@@ -45,6 +50,7 @@ const login = async (req, res) => {
             }
 
         } catch (err) {
+            err.message = "Invalid password"
             const error = generateAuthError(err)
             res.status(401).json({ created: false, error })
         }
