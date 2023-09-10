@@ -25,12 +25,12 @@ const hashText = async (text) => {
 }
 
 // compare password
-const comparePassword = async (Enteredpassword, dbPassword) => {
-    const validPassword = await Bcrypt.compare(Enteredpassword, dbPassword)
+const compareWithHashedText = async (plainText, hashedText) => {
+    const validPassword = await Bcrypt.compare(plainText, hashedText)
     if (validPassword) {
         return true
     } else {
-        throw new Error('Invalid password')
+        throw new Error(false)
     }
 }
 
@@ -85,7 +85,7 @@ const generateAuthError = (err) => {
 module.exports = {
     createToken,
     hashText,
-    comparePassword,
+    compareWithHashedText,
     verifyJWT,
     generateAuthError
 }

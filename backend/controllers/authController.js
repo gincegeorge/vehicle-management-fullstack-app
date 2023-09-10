@@ -1,4 +1,4 @@
-const { hashText, createToken, generateAuthError, comparePassword } = require("./helpers/authHelpers");
+const { hashText, createToken, generateAuthError, compareWithHashedText } = require("./helpers/authHelpers");
 const userSchema = require("../models/userSchema")
 const randomstring = require("randomstring");
 const sendEmail = require('../utils/email')
@@ -37,7 +37,7 @@ const login = async (req, res) => {
 
     if (userData) {
         try {
-            const isValid = await comparePassword(password, userData.password)
+            const isValid = await compareWithHashedText(password, userData.password)
 
             if (isValid) {
                 const token = await createToken(userData._id)
@@ -81,16 +81,19 @@ const forgotPassword = async (req, res) => {
         user.resetToken = await hashText(resetToken)
 
         //update user db
-        userSchema.updateOne({ email: user.email }, user).then(() => {
-            res.status(201).json({ created: true, })
-        })
+        await userSchema.updateOne({ email: user.email }, user)
 
         //send the token to user in email
-        const resentUrl = `${req.protocol}://${req.get('host')}/reset-password`
-        console.log(resentUrl);
-        
+        const resentUrl = `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`
+        const message = `We have received your password reset request please click on the below link\n\n ${resentUrl} `
+
         try {
-            sendEmail({})
+            await sendEmail({
+                email: user.email,
+                subject: "Password rest email",
+                message: message
+            })
+            res.status(200).json({ status: 'success', message: "Password reset link successfully sent to your email" })
         } catch (error) {
             console.log(error);
         }
@@ -105,9 +108,45 @@ const forgotPassword = async (req, res) => {
     }
 }
 
+//reset password
+const resetPassword = async (req, res) => {
+
+    try {
+
+        let { email, password } = req.body
+
+        const userData = await userSchema.findOne({ email: email })
+
+        const isResetTokenValid = await compareWithHashedText(req.params.resetToken, userData.resetToken)
+
+        //if reset token is valid, update the password
+        if (isResetTokenValid) {
+            password = await hashText(password)
+
+            userData.password = password
+            const user = await userSchema.updateOne({ email: email }, userData)
+            const token = await createToken(user._id)
+            console.log(user)
+
+            res.status(201).json({ created: true, user, token })
+        } else {
+            res.status(409).json({ created: false, message: "Password reset token is invalid, please try again later" })
+        }
+
+    } catch (err) {
+
+        const error = generateAuthError(err)
+
+        console.log(error)
+
+        res.status(409).json({ created: false, error })
+    }
+}
+
 module.exports = {
     signUp,
     login,
     verifyUserToken,
-    forgotPassword
+    forgotPassword,
+    resetPassword
 }
