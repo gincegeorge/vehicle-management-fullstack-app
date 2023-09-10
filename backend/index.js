@@ -18,6 +18,9 @@ app.use(express.json())
 // }))
 app.use(cors())
 
+// Serve Static Files
+app.use(express.static('./public/uploads'));
+
 //server setup
 app.listen(BACKEND_PORT, () => {
     try {

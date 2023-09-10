@@ -51,6 +51,12 @@ function Dashboard() {
             >
               Add new car
             </Link>
+            <Link
+              className="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0"
+              to="cars/edit/:id"
+            >
+              Edit car
+            </Link>
           </div>
         </div>
       </section>

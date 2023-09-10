@@ -16,15 +16,11 @@ const signUp = async (req, res) => {
 
         const token = await createToken(user._id)
 
-        console.log(user)
-
         res.status(201).json({ created: true, user, token })
 
     } catch (err) {
 
         const error = generateAuthError(err)
-
-        console.log(error)
 
         res.status(409).json({ created: false, error })
     }
@@ -34,11 +30,7 @@ const signUp = async (req, res) => {
 const login = async (req, res) => {
     const { email, password } = req.body
 
-    console.log(email, password);
-
     const userData = await userSchema.findOne({ email: email })
-
-    console.log(userData);
 
     if (userData) {
         try {
@@ -55,7 +47,6 @@ const login = async (req, res) => {
             res.status(401).json({ created: false, error })
         }
     } else {
-        console.log("Account not found")
         const error = {
             email: "The email address is not valid"
         }
@@ -65,14 +56,13 @@ const login = async (req, res) => {
 
 //verify usertoken
 const verifyUserToken = async (req, res) => {
-    console.log('herrrrrrrrr');
     const data = {
         isVerified: true
     }
     data.isVerified = await verifyJWT(req.body.cookie)
-    if(data.isVerified){
+    if (data.isVerified) {
         res.status(200).json(data)
-    }else{
+    } else {
         res.status(403).json(data)
     }
 }
@@ -111,7 +101,6 @@ const forgotPassword = async (req, res) => {
 
     } else {
         const errorText = 'Account not found'
-        console.log(errorText)
         const error = {
             email: errorText
         }
@@ -136,8 +125,8 @@ const resetPassword = async (req, res) => {
 
             userData.password = password
             const user = await userSchema.updateOne({ email: email }, userData)
+
             const token = await createToken(user._id)
-            console.log(user)
 
             res.status(201).json({ created: true, user, token })
         } else {
@@ -147,8 +136,6 @@ const resetPassword = async (req, res) => {
     } catch (err) {
 
         const error = generateAuthError(err)
-
-        console.log(error)
 
         res.status(409).json({ created: false, error })
     }

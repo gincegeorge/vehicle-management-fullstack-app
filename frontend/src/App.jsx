@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import store from "./utils/store.js";
 import { AddCar } from "./pages/dashboard/AddCar";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import { EditCar } from "./pages/dashboard/EditCar";
 
 function App() {
   //app layout
@@ -41,6 +42,10 @@ function App() {
           element: <Login />,
         },
         {
+          path: "/forgot-password",
+          element: <ForgotPassword />,
+        },
+        {
           path: "/dashboard",
           element: <Dashboard />,
         },
@@ -49,8 +54,8 @@ function App() {
           element: <AddCar />,
         },
         {
-          path: "/forgot-password",
-          element: <ForgotPassword/>,
+          path: "/dashboard/cars/edit/:id",
+          element: <EditCar />,
         },
       ],
     },

@@ -6,7 +6,6 @@ const addCar = async (req, res) => {
         if (!req.body.name ||
             !req.body.description ||
             !req.body.price ||
-            !req.body.availabeQuantity ||
             !req.body.manufacture ||
             !req.body.model) {
             res.status(400).send({ message: "Send all required fields" })
@@ -16,18 +15,17 @@ const addCar = async (req, res) => {
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
-            availabeQuantity: req.body.availabeQuantity,
             manufacture: req.body.manufacture,
             model: req.body.model
         }
 
         const car = await carSchema.create(neCar)
 
-        res.status(201).send(car)
+        res.status(201).json({ created: true, data: car })
 
     } catch (error) {
         console.log(error);
-        res.status(500).send({ message: error?.message })
+        res.status(500).json({ created: false, message: error?.message })
     }
 }
 
@@ -44,6 +42,26 @@ const viewCars = async (req, res) => {
         res.status(500).send({ message: error.message })
     }
 }
+//veiw car
+const viewCar = async (req, res) => {
+
+    try {
+
+        const { id } = req.params
+
+        const car = await carSchema.findOne({ _id: id })
+        console.log(car);
+        if (!car) {
+            res.status(404).json({ status: false })
+        } else {
+            res.status(200).json({ status: true, data: car })
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: error.message })
+    }
+}
 
 //edit car
 const editCar = async (req, res) => {
@@ -52,7 +70,6 @@ const editCar = async (req, res) => {
         if (!req.body.name ||
             !req.body.description ||
             !req.body.price ||
-            !req.body.availabeQuantity ||
             !req.body.manufacture ||
             !req.body.model) {
             res.status(400).send({ message: "Send all required fields" })
@@ -74,15 +91,21 @@ const editCar = async (req, res) => {
         let car = await carSchema.findOne({ _id: result._id })
 
         if (!result) {
-            res.status(404).json({ message: "Car not found" })
+            res.status(404).json({ created: false, message: "Car not found" })
         } else {
-            res.status(200).json({ message: "Car updated successfuly", data: car })
+            res.status(200).json({ created: true, message: "Car updated successfuly", data: car })
         }
 
     } catch (error) {
         console.log(error);
         res.status(500).send({ message: error.message })
     }
+}
+
+
+//Edit featured image
+const editFeaturedImage = (req, res) => {
+    console.log('hereeeeeeeeeee');
 }
 
 //delete car
@@ -106,6 +129,8 @@ const deleteCar = async (req, res) => {
 module.exports = {
     addCar,
     viewCars,
+    viewCar,
+    editFeaturedImage,
     editCar,
     deleteCar
 }
