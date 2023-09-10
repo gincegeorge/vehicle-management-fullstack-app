@@ -4,6 +4,7 @@ const morgan = require('morgan')
 require('dotenv').config()
 const { BACKEND_PORT, FRONTEND_URL } = process.env
 const authRoutes = require('./routes/authRoutes')
+const carRoutes = require('./routes/carRoutes')
 
 const app = express()
 app.use(morgan('dev'))
@@ -15,7 +16,6 @@ app.use(cors({
     methods: ["GET", "POST"],
     credentials: true
 }))
-
 
 //server setup
 app.listen(BACKEND_PORT, () => {
@@ -29,6 +29,7 @@ app.listen(BACKEND_PORT, () => {
 
 //auth routes
 app.use('/auth/', authRoutes)
+app.use('/cars/', carRoutes)
 
 
 //test route
