@@ -1,15 +1,19 @@
 ## instructions to run the app
 
-### clone this library 
+### clone this library
 
 ```
 git clone gincegeorge/vehicle-management-fullstack-app
-cd backend 
-npm install 
+```
 
-cd frontend 
+### install dependencies
+
+```
+cd backend
 npm install
 
+cd frontend
+npm install
 ```
 
 ### run the app

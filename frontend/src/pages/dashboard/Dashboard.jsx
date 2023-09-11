@@ -46,7 +46,6 @@ function Dashboard() {
   useEffect(() => {
     //get car details
     axios.get(import.meta.env.VITE_BACKEND_URL + "/cars").then(({ data }) => {
-      console.log(data);
       setCars(data.data);
     });
   }, [refreshCars]);
@@ -78,8 +77,9 @@ function Dashboard() {
         <div className="flex flex-col items-center px-6 py-28 min-h-screen mx-auto ">
           <h1 className=" text-2xl">Admin Dashboard</h1>
           <div className="m-4">
+
             <Link
-              className="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0"
+              className="py-1 px-2 block text-white rounded bg-primary-700"
               to="cars/add"
             >
               Add new car

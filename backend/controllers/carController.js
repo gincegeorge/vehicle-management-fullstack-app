@@ -24,7 +24,6 @@ const addCar = async (req, res) => {
         res.status(201).json({ created: true, data: car })
 
     } catch (error) {
-        console.log(error);
         res.status(500).json({ created: false, message: error?.message })
     }
 }
@@ -38,7 +37,6 @@ const viewCars = async (req, res) => {
             data: cars
         })
     } catch (error) {
-        console.log(error);
         res.status(500).send({ message: error.message })
     }
 }
@@ -50,7 +48,6 @@ const viewCar = async (req, res) => {
         const { id } = req.params
 
         const car = await carSchema.findOne({ _id: id })
-        console.log(car);
         if (!car) {
             res.status(404).json({ status: false })
         } else {
@@ -58,7 +55,6 @@ const viewCar = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error);
         res.status(500).send({ message: error.message })
     }
 }
@@ -97,7 +93,6 @@ const editCar = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error);
         res.status(500).send({ message: error.message })
     }
 }
@@ -119,7 +114,6 @@ const deleteCar = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error);
         res.status(500).send({ message: error.message })
     }
 }

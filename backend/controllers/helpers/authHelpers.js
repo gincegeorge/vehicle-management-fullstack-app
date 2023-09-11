@@ -40,22 +40,18 @@ const verifyJWT = async (token) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
 
-        console.log(decoded);
         try {
             const userData = await userSchema.findOne({ _id: decoded.id })
 
-            console.log(userData);
             if (userData) {
                 return true
             } else {
                 throw new Error(`Could not find user`)
             }
         } catch (error) {
-            console.log(error)
             return false
         }
     } catch (error) {
-        console.log(error);
         return false
     }
 }
@@ -64,13 +60,9 @@ const verifyJWT = async (token) => {
 const generateAuthError = (err) => {
     let error = { email: "", phone: "", password: "" }
 
-    console.log(err.message)
-
     if (err.code === 11000) {
 
         const keys = Object.keys(err.keyValue)
-
-        console.log(keys);
 
         if (keys.includes('email')) {
             error.email = "This email is already registered."

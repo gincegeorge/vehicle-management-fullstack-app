@@ -16,8 +16,7 @@ function ForgotPassword() {
     useFormik({
       initialValues,
       validationSchema: forgotPasswordSchema,
-      onSubmit: async (values, action) => {
-        console.log(values);
+      onSubmit: async (values) => {
 
         try {
           const { data } = await axios.post(

@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 //cors  
 // app.use(cors({
 //     origin: [FRONTEND_URL],
-//     methods: ["GET", "POST"],
+//     methods: ["GET", "POST","PUT", "DELETE", "PATCH"],
 //     credentials: true
 // }))
 app.use(cors())

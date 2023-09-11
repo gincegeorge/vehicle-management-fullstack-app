@@ -53,13 +53,12 @@ export const EditCar = () => {
       })
         .then(function ({ data }) {
           //handle success
-          console.log(data);
           setFiles(null);
           setImage(data.filename);
           ref.current.value = "";
         })
         .catch(function ({ data }) {
-          //handle error
+          //todo handle error
           console.log(data);
         });
     }
@@ -77,8 +76,6 @@ export const EditCar = () => {
   } = useFormik({
     validationSchema: carSchema,
     onSubmit: async (values, action) => {
-      console.log(values);
-
       try {
         const { data } = await axios.put(
           import.meta.env.VITE_BACKEND_URL + `/cars/edit/${id}`,
@@ -92,7 +89,6 @@ export const EditCar = () => {
           Navigate("/dashboard");
         }
       } catch (err) {
-        console.log(err.response.data);
         toast.warn("Something went wrong, please try again later", {
           position: "bottom-center",
           autoClose: 600,

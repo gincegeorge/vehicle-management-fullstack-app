@@ -20,7 +20,6 @@ export const AddCar = () => {
       initialValues,
       validationSchema: carSchema,
       onSubmit: async (values, action) => {
-        console.log(values);
         try {
           const { data } = await axios.post(
             import.meta.env.VITE_BACKEND_URL + "/cars/add",
@@ -28,8 +27,6 @@ export const AddCar = () => {
               ...values,
             }
           );
-
-          console.log(data);
 
           if (data.created) {
             action.resetForm();
