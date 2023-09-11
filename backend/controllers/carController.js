@@ -114,8 +114,8 @@ const editFeaturedImage = async (req, res) => {
 
         const result = await carSchema.findByIdAndUpdate(userId, carObj)
 
-        let car = await carSchema.findOne({ _id: result._id })
-
+        let car = await carSchema.findOne({ _id: userId })
+        
         if (!result) {
             res.status(404).json({ created: false, message: "Car not found" })
         } else {

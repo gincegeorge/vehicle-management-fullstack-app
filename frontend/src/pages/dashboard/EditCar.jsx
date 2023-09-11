@@ -57,8 +57,19 @@ export const EditCar = () => {
         .then(function ({ data }) {
           //handle success
           setFiles(null);
-          setImage(data.filename);
+          setImage(data?.data?.secondaryImages[0]);
           ref.current.value = "";
+
+          toast.success("Image updated successfully.", {
+            position: "bottom-center",
+            autoClose: 600,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         })
         .catch(function ({ data }) {
           //todo handle error
