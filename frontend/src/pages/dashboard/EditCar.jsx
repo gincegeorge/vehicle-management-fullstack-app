@@ -8,7 +8,7 @@ import { carSchema } from "../../schemas/index";
 import { useParams } from "react-router-dom";
 
 export const EditCar = () => {
-  const [file, setFile] = useState();
+  const [files, setFiles] = useState(null);
   const [image, setImage] = useState();
   const Navigate = useNavigate();
   const { id } = useParams();
@@ -38,10 +38,12 @@ export const EditCar = () => {
   //upload car featured image
   const handleImage = async (event) => {
     event.preventDefault();
-    if (file) {
+    if (files) {
       const formData = new FormData();
-      formData.append("image", file);
 
+      for (let i = 0; i < files.length; i++) {
+        formData.append(`file${i+1}`,files[i])
+      }
       axios({
         method: "post",
         url:
@@ -52,7 +54,7 @@ export const EditCar = () => {
         .then(function ({ data }) {
           //handle success
           console.log(data);
-          setFile(null);
+          setFiles(null);
           setImage(data.filename);
           ref.current.value = "";
         })
@@ -115,7 +117,7 @@ export const EditCar = () => {
             </h1>
             <div className="border p-3 rounded-lg border-slate-300">
               <h3 className="text-xl font-medium leading-tight py-2 tracking-tight text-gray-900 md:text-xl">
-                Featured Image
+                Gallery
               </h3>
               <div className="flex flex-row ">
                 <img
@@ -134,10 +136,12 @@ export const EditCar = () => {
                     encType="multipart/form"
                   >
                     <input
+                      name="carImages"
                       type="file"
                       accept="image/*"
                       ref={ref}
-                      onChange={(e) => setFile(e.target.files[0])}
+                      multiple
+                      onChange={(e) => setFiles(e.target.files)}
                       className="block mb-2 text-sm font-medium text-gray-900 mr-3"
                     ></input>
                     <button

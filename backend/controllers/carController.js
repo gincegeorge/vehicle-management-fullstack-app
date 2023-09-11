@@ -104,9 +104,7 @@ const editCar = async (req, res) => {
 
 
 //Edit featured image
-const editFeaturedImage = (req, res) => {
-    console.log('hereeeeeeeeeee');
-}
+const editFeaturedImage = (req, res) => { }
 
 //delete car
 const deleteCar = async (req, res) => {
@@ -115,9 +113,9 @@ const deleteCar = async (req, res) => {
         const result = await carSchema.findByIdAndDelete(id)
 
         if (!result) {
-            res.status(404).json({ message: "Car not found" })
+            res.status(404).json({ success: false, message: "Car not found" })
         } else {
-            res.status(200).json({ message: "Car deleted successfuly" })
+            res.status(200).json({ success: true, message: "Car deleted successfuly" })
         }
 
     } catch (error) {

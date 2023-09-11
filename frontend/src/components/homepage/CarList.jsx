@@ -3,14 +3,40 @@ import { useEffect, useState } from "react";
 
 export const CarList = () => {
   const [cars, setCars] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredCars, setFilteredCars] = useState([]);
+
   useEffect(() => {
+    //get cars form the server
     axios.get(import.meta.env.VITE_BACKEND_URL + "/cars").then(({ data }) => {
-      console.log(data);
       setCars(data.data);
+      setFilteredCars(data.data);
     });
   }, []);
 
-  console.log(cars);
+  useEffect(() => {
+    //DEBOUNCING - filters the list on each key press but skips filtering if the time difference is less than 200 milli seconds
+    const timer = setTimeout(() => {
+      if (searchTerm.length === 0) {
+        setFilteredCars(cars);
+      }
+      handleSearch();
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  //handle search
+  const handleSearch = () => {
+    let filtered = cars.filter(function (car) {
+      return (
+        car.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        car.manufacture.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        car.model.toString().includes(searchTerm.toLowerCase())
+      );
+    });
+    setFilteredCars(filtered);
+  };
 
   return (
     <>
@@ -25,8 +51,49 @@ export const CarList = () => {
               you
             </p>
           </div>
+
+          <div className="flex items-center mb-12 w-2/3 mx-auto">
+            <label htmlFor="simpleSearch" className="sr-only">
+              Search
+            </label>
+            <div className="relative w-full">
+              <input
+                type="text"
+                id="simple-search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
+                focus:border-blue-500 block w-full pl-10 p-2.5 "
+                placeholder="Search car name..."
+                required
+              />
+            </div>
+            <button
+              onClick={handleSearch}
+              className="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700
+               hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+            >
+              <svg
+                className="w-4 h-4"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+              <span className="sr-only">Search</span>
+            </button>
+          </div>
+
           <div className="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
-            {cars.map((car, index) => {
+            {filteredCars.map((car, index) => {
               return (
                 <div
                   key={index}
@@ -35,7 +102,13 @@ export const CarList = () => {
                   <a href="#">
                     <img
                       className="w-full rounded-lg sm:rounded-none sm:rounded-l-lg"
-                      src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/sofia-mcguire.png"
+                      src={
+                        car.secondaryImages[0]
+                          ? `${import.meta.env.VITE_BACKEND_URL}uploads/${
+                              car.secondaryImages[0]
+                            }`
+                          : "../../../public/img/placeholder.png"
+                      }
                       alt="Sofia Avatar"
                     />
                   </a>
