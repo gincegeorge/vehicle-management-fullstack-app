@@ -18,11 +18,14 @@ export const CarList = () => {
     //DEBOUNCING - filters the list on each key press but skips filtering if the time difference is less than 200 milli seconds
     const timer = setTimeout(() => {
       if (searchTerm.length === 0) {
-        setFilteredCars(cars);
+        return;
       }
       handleSearch();
     }, 200);
 
+    if (searchTerm.length === 0) {
+      setFilteredCars(cars);
+    }
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
@@ -53,9 +56,6 @@ export const CarList = () => {
           </div>
 
           <div className="flex items-center mb-12 w-2/3 mx-auto">
-            <label htmlFor="simpleSearch" className="sr-only">
-              Search
-            </label>
             <div className="relative w-full">
               <input
                 type="text"
