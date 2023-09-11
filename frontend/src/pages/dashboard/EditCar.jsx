@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 export const EditCar = () => {
   const [files, setFiles] = useState(null);
   const [image, setImage] = useState();
+  const [userId, setUserId] = useState(null);
   const Navigate = useNavigate();
   const { id } = useParams();
   const ref = useRef();
@@ -20,8 +21,6 @@ export const EditCar = () => {
         import.meta.env.VITE_BACKEND_URL + `/cars/view/${id}`
       );
 
-      console.log(data);
-
       if (data.status) {
         setValues({
           name: data.data.name,
@@ -30,7 +29,8 @@ export const EditCar = () => {
           price: data.data.price,
           model: data.data.model,
         });
-        setImage(data?.data?.profileImg);
+        setImage(data?.data?.secondaryImages[0]);
+        setUserId(data.data._id);
       }
     })();
   }, []);
@@ -42,8 +42,11 @@ export const EditCar = () => {
       const formData = new FormData();
 
       for (let i = 0; i < files.length; i++) {
-        formData.append(`file${i+1}`,files[i])
+        formData.append(`file${i + 1}`, files[i]);
       }
+
+      formData.append("userId", userId);
+
       axios({
         method: "post",
         url:
@@ -119,8 +122,8 @@ export const EditCar = () => {
                 <img
                   src={
                     image
-                      ? `${import.meta.env.VITE_BACKEND_URL}uploads/${image}`
-                      : "../../../public/img/placeholder.png"
+                      ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${image}`
+                      : "/img/placeholder.png"
                   }
                   alt=""
                   className="w-20 h-20 mr-5 rounded-full aspect-square"
@@ -176,16 +179,20 @@ export const EditCar = () => {
                 <label className="block mb-2 text-sm font-medium text-gray-900">
                   Manufacture
                 </label>
-                <input
-                  type="text"
-                  name="manufacture"
+                <select
                   id="manufacture"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                  placeholder="Suzuki"
                   value={values?.manufacture}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                />
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                >
+                  <option value="" label="Select" />
+                  <option value="Suzuki" label="Suzuki" />
+                  <option value="Hundai" label="Hundai" />
+                  <option value="Honda" label="Honda" />
+                  <option value="Mahindra" label="Mahindra" />
+                  <option value="Toyota" label="Toyota" />
+                </select>
                 {errors.manufacture && touched.manufacture ? (
                   <p className="text-red-500 mt-1 text-sm">
                     {" "}

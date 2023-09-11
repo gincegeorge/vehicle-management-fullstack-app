@@ -99,9 +99,35 @@ const editCar = async (req, res) => {
 
 
 //Edit featured image
-const editFeaturedImage = (req, res) => { }
+const editFeaturedImage = async (req, res) => {
+    let images = []
+    for (let image of req.files) {
+        images.push(image.filename)
+    }
 
-//delete car
+    try {
+        const { userId } = req.body
+
+        let carObj = {
+            secondaryImages: images
+        }
+
+        const result = await carSchema.findByIdAndUpdate(userId, carObj)
+
+        let car = await carSchema.findOne({ _id: result._id })
+
+        if (!result) {
+            res.status(404).json({ created: false, message: "Car not found" })
+        } else {
+            res.status(200).json({ created: true, message: "Car updated successfuly", data: car })
+        }
+    } catch (error) {
+        res.json({ created: false, message: "something went wrong, please try again later" })
+    }
+
+}
+
+//delete car 
 const deleteCar = async (req, res) => {
     try {
         const { id } = req.params

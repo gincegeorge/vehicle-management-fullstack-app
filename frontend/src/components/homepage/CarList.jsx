@@ -104,7 +104,7 @@ export const CarList = () => {
                       className="w-full rounded-lg sm:rounded-none sm:rounded-l-lg"
                       src={
                         car.secondaryImages[0]
-                          ? `${import.meta.env.VITE_BACKEND_URL}uploads/${
+                          ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${
                               car.secondaryImages[0]
                             }`
                           : "../../../public/img/placeholder.png"

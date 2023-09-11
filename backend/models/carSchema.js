@@ -7,7 +7,6 @@ const carSchema = new mongoose.Schema({
     availableQuantity: { type: Number },
     manufacture: { type: String, },
     model: { type: Number, },
-    primaryImage: { type: String },
     secondaryImages: { type: Array }
 }, { timestamps: true });
 

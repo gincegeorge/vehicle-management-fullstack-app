@@ -1,16 +1,13 @@
-const multer = require('multer');
+const multer = require("multer");
+let Storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "public/uploads");
+    },
+    filename: function (req, file, cb) {
+        let ext = file.originalname.substring(file.originalname.lastIndexOf("."));
 
-// set storage
-const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, 'public/uploads');
+        cb(null, file.fieldname + "-" + Date.now() + ext);
     },
-    filename: (req, file, callback) => {
-        const extension = file.originalname.substr(file.originalname.lastIndexOf('.'));
-        callback(null, `${file.fieldname}_${Date.now()}${extension}`);
-    },
+
 });
-
-store = multer({ storage });
-
-module.exports = store;
+module.exports = store = multer({ storage: Storage });

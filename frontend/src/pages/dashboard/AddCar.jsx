@@ -82,16 +82,20 @@ export const AddCar = () => {
                 <label className="block mb-2 text-sm font-medium text-gray-900">
                   Manufacture
                 </label>
-                <input
-                  type="text"
-                  name="manufacture"
+                <select
                   id="manufacture"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                  placeholder="Suzuki"
                   value={values?.manufacture}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                />
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                >
+                  <option value="" label="Select" />
+                  <option value="Suzuki" label="Suzuki" />
+                  <option value="Hundai" label="Hundai" />
+                  <option value="Honda" label="Honda" />
+                  <option value="Mahindra" label="Mahindra" />
+                  <option value="Toyota" label="Toyota" />
+                </select>
                 {errors.manufacture && touched.manufacture ? (
                   <p className="text-red-500 mt-1 text-sm">
                     {" "}

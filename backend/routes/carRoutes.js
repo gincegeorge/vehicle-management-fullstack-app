@@ -7,6 +7,6 @@ router.get('/', viewCars)
 router.post('/add', addCar)
 router.get('/view/:id', viewCar)
 router.put('/edit/:id', editCar)
-router.post('/edit/featuredImage/:id', store.array('carImages', 6), editFeaturedImage)
+router.post('/edit/featuredImage/:id', store.any("carImages"), editFeaturedImage)
 router.delete('/delete/:id', deleteCar)
 module.exports = router 
